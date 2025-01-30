@@ -2,6 +2,7 @@
 	import { P, Progressbar } from 'flowbite-svelte';
 	import RaceVisualizationChart from './RaceVisualizationChart.svelte';
 	import dayjs from 'dayjs';
+	import { formatTime } from '$lib/utils';
 
 	export let pp: any;
 
@@ -121,6 +122,9 @@
 		>
 		<P class="text-xs">Class Rating: <span class="font-bold">{pp?.classratin._text}</span></P>
 		<P class="text-xs">Speed Figure: <span class="font-bold">{pp?.speedfigur._text}</span></P>
+		<P class="text-xs"
+			>Time: <span class="font-bold">{formatTime(parseFloat(pp?.horsetimef?._text))}</span></P
+		>
 	</div>
 	<div class="col-span-8">
 		<RaceVisualizationChart {pp} />
@@ -138,6 +142,10 @@
 		<P class="text-xs font-thin">{pp?.shortcomme._text}</P>
 		<P class="text-xs"
 			>Winning Speed Figure: <span class="font-bold">{pp?.winnersspe._text}</span></P
+		>
+		<P class="text-xs"
+			>Winning Time: <span class="font-bold">{formatTime(parseFloat(pp?.leadertim4?._text))}</span
+			></P
 		>
 	</div>
 {/if}
