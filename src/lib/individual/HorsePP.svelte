@@ -6,6 +6,7 @@
 	import HorseStats from './stats/HorseStats.svelte';
 	import TrainerStats from './stats/TrainerStats.svelte';
 	import IndividualRaceRow from './stats/IndividualRaceRow.svelte';
+	import { numRaces } from '$lib/stores';
 
 	export let horse: Horsedaum;
 </script>
@@ -52,7 +53,7 @@
 		</div>
 	</div>
 </div>
-{#each horse.ppdata.filter((pp) => pp.racetype._text !== 'SCR').slice(0, 5) as pp}
+{#each horse.ppdata.filter((pp: any) => pp?.racetype?._text !== 'SCR').slice(0, $numRaces) as pp}
 	<div class="grid grid-cols-12">
 		<IndividualRaceRow {pp} />
 	</div>

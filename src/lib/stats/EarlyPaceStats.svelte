@@ -15,7 +15,7 @@
 
 	function buildOptions(race: RaceRoot) {
 		const targetDistance = parseFloat(race.distance._text);
-		const raceDate = dayjs(race.race_date._text, 'YYYYMMDD');
+		const raceDate = dayjs(race?.race_date._text, 'YYYYMMDD');
 		const K_D = 80; // Distance sensitivity constant (adjust as needed)
 		const K_T = 40; // Time sensitivity constant (adjust as needed)
 
@@ -24,9 +24,10 @@
 
 			if (!Array.isArray(horse.ppdata)) horse.ppdata = [horse.ppdata];
 			horse.ppdata.forEach((race: any) => {
-				const epf = parseInt(race.pacefigure._text);
+				if (!race?.pacefigure) return;
+				const epf = parseInt(race?.pacefigure._text);
 				const distance = parseFloat(race.distance._text);
-				const daysAgo = raceDate.diff(dayjs(race.racedate._text, 'YYYYMMDD'), 'day');
+				const daysAgo = raceDate.diff(dayjs(race?.racedate._text, 'YYYYMMDD'), 'day');
 
 				// Distance weight
 				const distanceWeight = Math.exp(-Math.abs(distance - targetDistance) / K_D);

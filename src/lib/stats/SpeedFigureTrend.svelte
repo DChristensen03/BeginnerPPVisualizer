@@ -2,12 +2,13 @@
 	import type { RaceRoot } from '$lib/types/race';
 	import { Chart } from 'flowbite-svelte';
 	import colors from '$lib/colors.json';
+	import { numRaces } from '$lib/stores';
 
-	export let race: RaceRoot, numRaces: Number;
+	export let race: RaceRoot;
 
 	let options: ApexCharts.ApexOptions;
 
-	$: buildOptions(race, numRaces);
+	$: buildOptions(race, $numRaces);
 
 	function buildOptions(race: RaceRoot, numRaces: Number) {
 		// Transform data into series format
