@@ -22,7 +22,7 @@
 				type: 'donut'
 			},
 			title: {
-				text: trainer.tran_disp._text,
+				text: `${trainer.tran_disp._text}: ${numStarts} (${numWins}-${numPlaces}-${numShows})`,
 				align: 'center',
 				style: {
 					fontSize: '10px'
