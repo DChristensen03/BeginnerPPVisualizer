@@ -7,6 +7,7 @@
 	import TrainerStats from './stats/TrainerStats.svelte';
 	import IndividualRaceRow from './stats/IndividualRaceRow.svelte';
 	import { numRaces } from '$lib/stores';
+	import WorkoutStats from './stats/WorkoutStats.svelte';
 
 	export let horse: Horsedaum;
 </script>
@@ -58,3 +59,6 @@
 		<IndividualRaceRow {pp} />
 	</div>
 {/each}
+<div>
+	<WorkoutStats workouts={horse.workoutdata} />
+</div>

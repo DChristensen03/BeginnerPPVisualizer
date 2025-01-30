@@ -44,26 +44,39 @@
 		return raceTypes[raceClass as keyof typeof raceTypes] || raceClass;
 	}
 
-	function formatDistance(distance: number) {
-		distance = distance / 100;
-		if (distance < 8) {
-			if (Number.isInteger(distance)) return `${distance}f`;
-			else return `${Math.floor(distance)} 1/2f`;
-		} else if (distance == 8) {
-			return `1 mile`;
-		} else {
-			const remainder = distance % 8;
-			const miles = Math.floor(distance / 8);
-			if (Number.isInteger(remainder)) {
-				if (remainder == 2 || remainder == 6) {
-					return `${miles} ${remainder / 2}/4 miles`;
-				} else if (remainder == 4) {
-					return `${miles} ${remainder / 4}/2 miles`;
-				} else {
-					return `${miles} ${remainder}/8 miles`;
-				}
-			} else return `${miles} ${remainder * 2}/16 miles`;
+	function formatDistance(distance: number, measurement: string) {
+		if (measurement === 'Y') return `${distance} yards`;
+		const FURLONGS_PER_MILE = 8;
+		distance = distance / 100; // Convert to furlongs
+
+		// Special case for exactly 1 mile
+		if (distance === FURLONGS_PER_MILE) return '1 mile';
+
+		// Use furlongs for distances under 1 mile
+		if (distance < FURLONGS_PER_MILE) {
+			return Number.isInteger(distance) ? `${distance}f` : `${Math.floor(distance)} 1/2f`;
 		}
+
+		// Convert to miles and remainder
+		const miles = Math.floor(distance / FURLONGS_PER_MILE);
+		const remainderFurlongs = distance % FURLONGS_PER_MILE;
+
+		// Helper to find GCD for fraction simplification
+		const gcd = (a: number, b: number): number => (b ? gcd(b, a % b) : a);
+
+		if (Number.isInteger(remainderFurlongs)) {
+			if (remainderFurlongs === 0) return `${miles} miles`;
+
+			// Convert to numerator/8
+			const numerator = remainderFurlongs;
+			const denominator = FURLONGS_PER_MILE;
+			const divisor = gcd(numerator, denominator);
+
+			return `${miles} ${numerator / divisor}/${denominator / divisor} miles`;
+		}
+
+		// Handle half furlongs by converting to sixteenths
+		return `${miles} ${remainderFurlongs * 2}/16 miles`;
 	}
 
 	function formatSurface(surface: string) {
@@ -102,7 +115,7 @@
 			})}</P
 		>
 		<P class="text-xs font-thin"
-			>{formatDistance(pp?.distance._text)}
+			>{formatDistance(pp?.distance._text, pp?.disttype._text)}
 			{formatSurface(pp?.surface._text)}
 			{formatCondition(pp?.trackcondi._text)}</P
 		>
