@@ -13,31 +13,50 @@
 
 	dayjs.extend(customParseFormat);
 
+	function predictEarlyPosition(ppdata: any, targetDistance: number, raceDate: dayjs.Dayjs) {
+		if (!ppdata || !Array.isArray(ppdata) || ppdata.length === 0) return 0;
+		// Constants for weighting
+		const DAYS_WEIGHT_FALLOFF = 180; // How quickly time weight decreases
+		const DISTANCE_WEIGHT_FALLOFF = 2; // How quickly distance similarity weight decreases
+		const MIN_WEIGHT = 0.1; // Minimum weight for any race
+
+		// Calculate weights and weighted sum for each historical race
+		let totalWeight = 0;
+		let weightedSum = 0;
+
+		ppdata.forEach((race: any) => {
+			if (!race?.pacefigure?._text) return; // Skip if no pace figure
+			// Calculate days since race
+			const daysSince = raceDate.diff(dayjs(race?.racedate._text, 'YYYYMMDD'), 'day');
+			console.log('Days since', daysSince);
+
+			// Time weight: exponential decay based on days since race
+			const timeWeight = Math.exp(-daysSince / DAYS_WEIGHT_FALLOFF);
+
+			// Distance weight: exponential decay based on distance difference
+			const distanceDiff = Math.abs(parseInt(race.distance._text) - targetDistance);
+			const distanceWeight = Math.exp(-distanceDiff / DISTANCE_WEIGHT_FALLOFF);
+
+			// Combine weights and ensure minimum weight
+			let totalRaceWeight = Math.max(timeWeight * distanceWeight, MIN_WEIGHT);
+
+			weightedSum += parseInt(race?.pacefigure._text) * totalRaceWeight;
+			totalWeight += totalRaceWeight;
+		});
+
+		// Return weighted average of early speed ratings
+		return totalWeight > 0 ? weightedSum / totalWeight : null;
+	}
+
 	function buildOptions(race: RaceRoot) {
 		const targetDistance = parseFloat(race.distance._text);
-		const raceDate = dayjs(race?.race_date._text, 'YYYYMMDD');
-		const K_D = 80; // Distance sensitivity constant (adjust as needed)
-		const K_T = 40; // Time sensitivity constant (adjust as needed)
+		const raceDate = dayjs(race.race_date._text, 'YYYYMMDD');
 
 		const adjustedPace: any = race.horsedata.map((horse) => {
-			let weightedEPF = 0;
-
 			if (!Array.isArray(horse.ppdata)) horse.ppdata = [horse.ppdata];
-			horse.ppdata.forEach((race: any) => {
-				if (!race?.pacefigure) return;
-				const epf = parseInt(race?.pacefigure._text);
-				const distance = parseFloat(race.distance._text);
-				const daysAgo = raceDate.diff(dayjs(race?.racedate._text, 'YYYYMMDD'), 'day');
+			let weightedEPF = predictEarlyPosition(horse.ppdata, targetDistance, raceDate);
+			console.log(weightedEPF);
 
-				// Distance weight
-				const distanceWeight = Math.exp(-Math.abs(distance - targetDistance) / K_D);
-
-				// Time weight
-				const timeWeight = Math.exp(-daysAgo / K_T);
-
-				// Accumulate weighted EPF
-				weightedEPF += epf * distanceWeight * timeWeight;
-			});
 			// @ts-ignore
 			const color = colors[horse.pp._text.replace(/\D/g, '')];
 
@@ -99,7 +118,7 @@
 					colors: ['#304758']
 				},
 				formatter: function (val: number) {
-					return val.toFixed(1);
+					return val?.toFixed(1) ?? 0;
 				}
 			},
 			stroke: {
