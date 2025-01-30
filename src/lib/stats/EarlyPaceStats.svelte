@@ -17,7 +17,7 @@
 		if (!ppdata || !Array.isArray(ppdata) || ppdata.length === 0) return 0;
 		// Constants for weighting
 		const DAYS_WEIGHT_FALLOFF = 180; // How quickly time weight decreases
-		const DISTANCE_WEIGHT_FALLOFF = 2; // How quickly distance similarity weight decreases
+		const DISTANCE_WEIGHT_FALLOFF = 100; // How quickly distance similarity weight decreases
 		const MIN_WEIGHT = 0.1; // Minimum weight for any race
 
 		// Calculate weights and weighted sum for each historical race
@@ -28,7 +28,6 @@
 			if (!race?.pacefigure?._text) return; // Skip if no pace figure
 			// Calculate days since race
 			const daysSince = raceDate.diff(dayjs(race?.racedate._text, 'YYYYMMDD'), 'day');
-			console.log('Days since', daysSince);
 
 			// Time weight: exponential decay based on days since race
 			const timeWeight = Math.exp(-daysSince / DAYS_WEIGHT_FALLOFF);
@@ -55,7 +54,6 @@
 		const adjustedPace: any = race.horsedata.map((horse) => {
 			if (!Array.isArray(horse.ppdata)) horse.ppdata = [horse.ppdata];
 			let weightedEPF = predictEarlyPosition(horse.ppdata, targetDistance, raceDate);
-			console.log(weightedEPF);
 
 			// @ts-ignore
 			const color = colors[horse.pp._text.replace(/\D/g, '')];
