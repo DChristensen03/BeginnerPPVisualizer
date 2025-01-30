@@ -101,7 +101,7 @@
 </script>
 
 {#if pp?.racedate}
-	<div class="col-span-2">
+	<div class="col-span-2 my-auto">
 		<P class="text-xs font-semibold"
 			>{dayjs(pp?.racedate._text).format('YYYY-MM-DD')} {pp?.trackname._text}</P
 		>
@@ -129,7 +129,7 @@
 	<div class="col-span-8">
 		<RaceVisualizationChart {pp} />
 	</div>
-	<div class="col-span-2">
+	<div class="col-span-2 my-auto">
 		<div class="flex w-full items-center gap-2">
 			<P class="whitespace-nowrap text-sm font-semibold">Bad Luck:</P>
 			<Progressbar
