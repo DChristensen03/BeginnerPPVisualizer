@@ -1,0 +1,18 @@
+export default {
+    "1": {primary: "#ff0000", secondary: "#000000"},
+    "2": {primary: "#c0c0c0", secondary: "#000000"},
+    "3": {primary: "#0000FF", secondary: "#000000"},
+    "4": {primary: "#ffff00", secondary: "#000000"},
+    "5": {primary: "#00cc00", secondary: "#000000"},
+    "6": {primary: "#000000", secondary: "#ffff00"},
+    "7": {primary: "#ff8000", secondary: "#000000"},
+    "8": {primary: "#ff00ff", secondary: "#000000"},
+    "9": {primary: "#00ffff", secondary: "#000000"},
+    "10": {primary: "#7f00ff", secondary: "#000000"},
+    "11": {primary: "#a0a0a0", secondary: "#ff0000"},
+    "12": {primary: "#33ff33", secondary: "#000000"},
+    "13": {primary: "#663300", secondary: "#000000"},
+    "14": {primary: "#cc6600", secondary: "#f9ee5f"},
+    "15": {primary: "#a8a897", secondary: "#000000"},
+    "16": {primary: "#9be7ee", secondary: "#c38b95"},
+}
