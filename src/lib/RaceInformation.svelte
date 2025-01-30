@@ -11,7 +11,7 @@
 <div class="mb-3 grid grid-cols-8">
 	<div>
 		<Heading tag="h1">{race.race._text}</Heading>
-		<P class="font-semibold">Class: {race.todays_cls._text}</P>
+		<P class="font-semibold">Class Rating: {race.todays_cls._text}</P>
 		<P class="font-semibold">Par Time: {formatTime(parseFloat(race.partim._text))}</P>
 	</div>
 	<div class="col-span-6">
