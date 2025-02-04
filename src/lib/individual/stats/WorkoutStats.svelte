@@ -8,15 +8,16 @@
 	$: console.log(workouts);
 
 	function formatWorkoutText(workoutText: string) {
-		const splitWorks = workoutText.split(' ');
-		const workDist = `${splitWorks[0].replace(/\D/g, '')}${breed === 'QH' ? 'yd' : 'f'}`;
-		const workTime = splitWorks[1].replace(/[A-Z]+$/i, '') + 's';
-		const workType = splitWorks[1].replace(/[^a-zA-Z]/g, '');
-		const formattedWorkType = workType.includes('B')
-			? workType.includes('g')
+		let splitWorks = workoutText.split(' ');
+		if (splitWorks.length < 2) splitWorks = workoutText.split(')');
+		const workDist = `${splitWorks[0]?.replace(/\D/g, '')}${breed === 'QH' ? 'yd' : 'f'}`;
+		const workTime = splitWorks[1]?.replace(/[A-Z]+$/i, '') + 's';
+		const workType = splitWorks[1]?.replace(/[^a-zA-Z]/g, '');
+		const formattedWorkType = workType?.includes('B')
+			? workType?.includes('g')
 				? 'Breezing Gate'
 				: 'Breezing'
-			: workType.includes('g')
+			: workType?.includes('g')
 				? 'Handily Gate'
 				: 'Handily';
 
