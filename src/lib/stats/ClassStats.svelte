@@ -11,27 +11,29 @@
 	$: buildOptions(race, $numRaces);
 
 	function buildOptions(race: RaceRoot, numRaces: Number) {
-		const recentClass = race.horsedata.map((horse) => {
-			let classLastNum: number = 0;
-			if (!Array.isArray(horse.ppdata)) horse.ppdata = [horse.ppdata];
-			let filteredPPs = horse.ppdata
-				.filter((pp: any) => pp?.racetype._text !== 'SCR' && pp?.classratin)
-				.slice(0, numRaces);
-			filteredPPs.forEach((pp: any) => {
-				classLastNum += parseInt(pp.classratin._text);
+		const recentClass = race.horsedata
+			.filter((horse) => horse.notScratched)
+			.map((horse) => {
+				let classLastNum: number = 0;
+				if (!Array.isArray(horse.ppdata)) horse.ppdata = [horse.ppdata];
+				let filteredPPs = horse.ppdata
+					.filter((pp: any) => pp?.racetype._text !== 'SCR' && pp?.classratin)
+					.slice(0, numRaces);
+				filteredPPs.forEach((pp: any) => {
+					classLastNum += parseInt(pp.classratin._text);
+				});
+				// @ts-ignore
+				const color = colors[horse.pp._text.replace(/\D/g, '')];
+				return {
+					x: `(${horse.pp._text}) ${horse.horse_name._text}`,
+					y: classLastNum !== 0 ? classLastNum / filteredPPs.length : 0,
+					fillColor: color.primary,
+					strokeColor: color.secondary,
+					meta: {
+						foreColor: color.secondary
+					}
+				};
 			});
-			// @ts-ignore
-			const color = colors[horse.pp._text.replace(/\D/g, '')];
-			return {
-				x: `(${horse.pp._text}) ${horse.horse_name._text}`,
-				y: classLastNum !== 0 ? classLastNum / filteredPPs.length : 0,
-				fillColor: color.primary,
-				strokeColor: color.secondary,
-				meta: {
-					foreColor: color.secondary
-				}
-			};
-		});
 		options = {
 			series: [
 				{

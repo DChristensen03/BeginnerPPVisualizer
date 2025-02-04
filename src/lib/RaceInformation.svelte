@@ -4,8 +4,6 @@
 	import { formatTime } from './utils';
 
 	export let race: RaceRoot;
-
-	$: console.log(race);
 </script>
 
 <div class="mb-3 grid grid-cols-8">

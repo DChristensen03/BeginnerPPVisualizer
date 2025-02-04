@@ -53,7 +53,7 @@
 				type: 'numeric',
 				labels: {
 					formatter: (val) => {
-						return parseInt(val + 1).toString();
+						return val.toString();
 					}
 				}
 			},

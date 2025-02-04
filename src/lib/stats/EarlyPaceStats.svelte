@@ -52,23 +52,25 @@
 		const targetDistance = parseFloat(race.distance._text);
 		const raceDate = dayjs(race.race_date._text, 'YYYYMMDD');
 
-		const adjustedPace: any = race.horsedata.map((horse) => {
-			if (!Array.isArray(horse.ppdata)) horse.ppdata = [horse.ppdata];
-			let weightedEPF = predictEarlyPosition(horse.ppdata, targetDistance, raceDate);
+		const adjustedPace: any = race.horsedata
+			.filter((horse) => horse.notScratched)
+			.map((horse) => {
+				if (!Array.isArray(horse.ppdata)) horse.ppdata = [horse.ppdata];
+				let weightedEPF = predictEarlyPosition(horse.ppdata, targetDistance, raceDate);
 
-			// @ts-ignore
-			const color = colors[horse.pp._text.replace(/\D/g, '')];
+				// @ts-ignore
+				const color = colors[horse.pp._text.replace(/\D/g, '')];
 
-			return {
-				x: `(${horse.pp._text}) ${horse.horse_name._text}`,
-				y: weightedEPF,
-				fillColor: color.primary,
-				strokeColor: color.secondary,
-				meta: {
-					foreColor: color.secondary
-				}
-			};
-		});
+				return {
+					x: `(${horse.pp._text}) ${horse.horse_name._text}`,
+					y: weightedEPF,
+					fillColor: color.primary,
+					strokeColor: color.secondary,
+					meta: {
+						foreColor: color.secondary
+					}
+				};
+			});
 		adjustedPace.sort((a: any, b: any) => b.y - a.y);
 		options = {
 			series: [

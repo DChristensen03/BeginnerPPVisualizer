@@ -12,28 +12,30 @@
 
 	function buildOptions(race: RaceRoot, numRaces: Number) {
 		// Transform data into series format
-		const series = race.horsedata.map((horse) => {
-			if (!Array.isArray(horse.ppdata)) horse.ppdata = [horse.ppdata];
-			const speedFigures = horse.ppdata
-				.filter((pp: any) => pp?.racetype._text !== 'SCR' && parseInt(pp?.speedfigur._text) > 0)
-				.slice(0, numRaces)
-				.reverse()
-				.map((pp: any) => parseInt(pp.speedfigur._text));
+		const series = race.horsedata
+			.filter((horse) => horse.notScratched)
+			.map((horse) => {
+				if (!Array.isArray(horse.ppdata)) horse.ppdata = [horse.ppdata];
+				const speedFigures = horse.ppdata
+					.filter((pp: any) => pp?.racetype._text !== 'SCR' && parseInt(pp?.speedfigur._text) > 0)
+					.slice(0, numRaces)
+					.reverse()
+					.map((pp: any) => parseInt(pp.speedfigur._text));
 
-			// Pad with nulls if less than numRaces entries
-			while (speedFigures.length < numRaces) {
-				speedFigures.unshift(null);
-			}
+				// Pad with nulls if less than numRaces entries
+				while (speedFigures.length < numRaces) {
+					speedFigures.unshift(null);
+				}
 
-			// @ts-ignore
-			const color = colors[horse.pp._text.replace(/\D/g, '')];
+				// @ts-ignore
+				const color = colors[horse.pp._text.replace(/\D/g, '')];
 
-			return {
-				name: horse.pp._text,
-				data: speedFigures,
-				color: color.primary
-			};
-		});
+				return {
+					name: horse.pp._text,
+					data: speedFigures,
+					color: color.primary
+				};
+			});
 
 		options = {
 			series: series,

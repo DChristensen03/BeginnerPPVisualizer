@@ -134,7 +134,8 @@ export interface RaceRoot {
     jockey: Jockey
     trainer: Trainer
     workoutdata: Workoutdaum[]
-    ppdata: any
+    ppdata: any,
+    notScratched?: boolean
   }
   
   export interface HorseName {

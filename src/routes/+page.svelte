@@ -8,6 +8,7 @@
 	import RaceStats from '$lib/RaceStats.svelte';
 	import HorsePp from '$lib/individual/HorsePP.svelte';
 	import { printMode, numRaces } from '$lib/stores';
+	import RaceHorses from '$lib/RaceHorses.svelte';
 
 	let files: FileList | undefined;
 	let races: RaceRoot[] = [];
@@ -26,6 +27,7 @@
 		const json = JSON.parse(convert.xml2json(await file.text(), { compact: true, spaces: 4 }));
 		races = json.data.racedata;
 		races = [...races];
+		races.forEach((r) => r.horsedata.forEach((h) => (h.notScratched = true)));
 		race = races[0];
 	}
 
@@ -102,8 +104,9 @@
 		class="mx-3 mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-md print:mx-0 print:border-0 print:bg-transparent"
 	>
 		<RaceInformation {race} />
+		<RaceHorses {race} />
 		<RaceStats {race} />
-		{#each race.horsedata as horse}
+		{#each race.horsedata.filter((horse) => horse.notScratched) as horse}
 			<Hr />
 			<HorsePp {horse} />
 		{/each}
@@ -117,7 +120,7 @@
 		>
 			<RaceInformation {race} />
 			<RaceStats {race} />
-			{#each race.horsedata as horse}
+			{#each race.horsedata.filter((horse) => horse.notScratched) as horse}
 				<Hr />
 				<HorsePp {horse} />
 			{/each}

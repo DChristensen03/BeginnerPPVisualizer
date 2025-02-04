@@ -60,5 +60,5 @@
 	</div>
 {/each}
 <div>
-	<WorkoutStats workouts={horse.workoutdata} />
+	<WorkoutStats workouts={horse.workoutdata} breed={horse.breed_type._text} />
 </div>

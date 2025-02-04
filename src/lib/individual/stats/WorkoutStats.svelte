@@ -3,7 +3,25 @@
 	import dayjs from 'dayjs';
 	import { P, Progressbar } from 'flowbite-svelte';
 
-	export let workouts: Workoutdaum[];
+	export let workouts: Workoutdaum[], breed: string;
+
+	$: console.log(workouts);
+
+	function formatWorkoutText(workoutText: string) {
+		const splitWorks = workoutText.split(' ');
+		const workDist = `${splitWorks[0].replace(/\D/g, '')}${breed === 'QH' ? 'yd' : 'f'}`;
+		const workTime = splitWorks[1].replace(/[A-Z]+$/i, '') + 's';
+		const workType = splitWorks[1].replace(/[^a-zA-Z]/g, '');
+		const formattedWorkType = workType.includes('B')
+			? workType.includes('g')
+				? 'Breezing Gate'
+				: 'Breezing'
+			: workType.includes('g')
+				? 'Handily Gate'
+				: 'Handily';
+
+		return workTime + ' ' + workDist + ' ' + formattedWorkType;
+	}
 </script>
 
 <div class="flex w-full justify-evenly">
@@ -12,7 +30,7 @@
 			<div class="mx-2 w-min">
 				<P class="w-full whitespace-nowrap text-start text-xs font-thin"
 					>{dayjs().subtract(parseInt(workout.days_back._text), 'day').format('MM/DD/YY')}
-					{workout.worktext._text}</P
+					{formatWorkoutText(workout.worktext._text)}</P
 				>
 				<div class="flex w-full items-center gap-1">
 					<P class="whitespace-nowrap text-xs font-thin"
