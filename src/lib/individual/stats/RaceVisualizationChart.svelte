@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { animationsEnabled } from '$lib/stores';
 	import { Chart } from 'flowbite-svelte';
 
 	export let pp: any;
@@ -55,6 +56,9 @@
 				},
 				zoom: {
 					enabled: false
+				},
+				animations: {
+					enabled: $animationsEnabled
 				}
 			},
 			plotOptions: {

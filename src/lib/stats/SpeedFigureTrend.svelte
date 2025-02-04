@@ -2,7 +2,7 @@
 	import type { RaceRoot } from '$lib/types/race';
 	import { Chart } from 'flowbite-svelte';
 	import colors from '$lib/colors.json';
-	import { numRaces } from '$lib/stores';
+	import { animationsEnabled, numRaces } from '$lib/stores';
 
 	export let race: RaceRoot;
 
@@ -41,7 +41,7 @@
 				type: 'line',
 				height: 350,
 				animations: {
-					enabled: true
+					enabled: $animationsEnabled
 				},
 				toolbar: {
 					show: false

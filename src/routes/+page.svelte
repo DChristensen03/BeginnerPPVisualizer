@@ -14,7 +14,7 @@
 	let race: RaceRoot | undefined;
 
 	onMount(async () => {
-		const blob = await fetch('/data/tup20250203ppsXML.xml').then((response) => response.blob());
+		const blob = await fetch('/data/tup20250204ppsXML.xml').then((response) => response.blob());
 		const file = new File([blob], 'example.xml');
 		parseXMLPP(file);
 	});
@@ -48,8 +48,6 @@
 		const index = parseInt(event.target.innerText.split(' ')[1]) - 1;
 		race = races[index];
 	}
-
-	$: console.log($printMode);
 </script>
 
 <div class="mx-auto max-w-2xl print:hidden">

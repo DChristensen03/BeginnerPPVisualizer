@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { animationsEnabled } from '$lib/stores';
 	import type { Trainer } from '$lib/types/race';
 	import { Chart } from 'flowbite-svelte';
 
@@ -19,7 +20,10 @@
 			series: [numStarts - numWins - numPlaces - numShows, numWins, numPlaces, numShows],
 			labels: ['Off Board', 'Wins', 'Places', 'Shows'],
 			chart: {
-				type: 'donut'
+				type: 'donut',
+				animations: {
+					enabled: $animationsEnabled
+				}
 			},
 			title: {
 				text: `${trainer.tran_disp._text}: ${numStarts} (${numWins}-${numPlaces}-${numShows})`,

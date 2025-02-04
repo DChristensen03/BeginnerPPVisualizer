@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { animationsEnabled } from '$lib/stores';
 	import type { StatsData } from '$lib/types/race';
 	import { Chart } from 'flowbite-svelte';
 
@@ -66,7 +67,7 @@
 				type: 'bar',
 				height: 225,
 				animations: {
-					enabled: true
+					enabled: $animationsEnabled
 				},
 				toolbar: {
 					show: false

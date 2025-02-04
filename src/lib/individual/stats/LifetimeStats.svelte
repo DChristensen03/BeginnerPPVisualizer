@@ -2,6 +2,8 @@
 	import type { Horsedaum, RaceRoot } from '$lib/types/race';
 	import { Chart } from 'flowbite-svelte';
 	import colors from '$lib/colors.json';
+	import { animationsEnabled } from '$lib/stores';
+	import dayjs from 'dayjs';
 
 	export let horse: Horsedaum;
 
@@ -15,7 +17,7 @@
 			.filter((pp: any) => pp?.racetype._text !== 'SCR' && parseInt(pp?.speedfigur._text) > 0)
 			.slice(0, 10)
 			.reverse()
-			.map((pp: any) => parseInt(pp.oflfinish._text));
+			.map((pp: any, i: number) => parseInt(pp.oflfinish._text));
 
 		// Pad with nulls if less than 5 entries
 		while (finishes.length < 10) {
@@ -31,7 +33,7 @@
 				type: 'line',
 				height: 225,
 				animations: {
-					enabled: true
+					enabled: $animationsEnabled
 				},
 				toolbar: {
 					show: false
@@ -48,7 +50,12 @@
 				title: {
 					text: 'Last 10 Finishes'
 				},
-				categories: ['10', '9', '8', '7', '6', '5', '4', '3', '2', '1']
+				type: 'numeric',
+				labels: {
+					formatter: (val) => {
+						return parseInt(val + 1).toString();
+					}
+				}
 			},
 			yaxis: {
 				title: {

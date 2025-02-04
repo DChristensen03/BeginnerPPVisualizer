@@ -4,6 +4,7 @@
 	import colors from '$lib/colors.json';
 	import dayjs from 'dayjs';
 	import customParseFormat from 'dayjs/plugin/customParseFormat';
+	import { animationsEnabled } from '$lib/stores';
 
 	export let race: RaceRoot;
 
@@ -81,6 +82,9 @@
 				height: 350,
 				toolbar: {
 					show: false
+				},
+				animations: {
+					enabled: $animationsEnabled
 				}
 			},
 			states: {
@@ -130,6 +134,9 @@
 			subtitle: {
 				text: 'Estimates the early race pace based on a calculation weighting race distance as well as recency.',
 				align: 'center'
+			},
+			xaxis: {
+				type: 'numeric'
 			}
 		};
 	}
