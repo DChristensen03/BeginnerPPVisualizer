@@ -15,7 +15,7 @@
 	let race: RaceRoot | undefined;
 
 	onMount(async () => {
-		const blob = await fetch('/data/cd20250503ppsXML.xml').then((response) => response.blob());
+		const blob = await fetch('/data/leg20250524ppsXML.xml').then((response) => response.blob());
 		const file = new File([blob], 'example.xml');
 		parseXMLPP(file);
 	});
